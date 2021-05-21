@@ -9,19 +9,19 @@ var planets;
 function start() {  
     innerWidth = window.innerWidth
     innerHeight = window.innerHeight
-    spacing = innerHeight / 10 // spacing between planets
+    spacing = innerHeight / 15 // spacing between planets
     planets = new Array();
 
     area.start();  
-    theSun = new sun(50, 50, "Orange");
-    new planet("Mercury", 10, 10, "Gray", spacing, 0);
-    new planet("Venus", 20, 20, "Beige", spacing*2, 0);
-    earth = new planet("Earth", 20, 20, "DodgerBlue", spacing*3, 0);
-    new planet("Mars", 15, 15, "Tomato", spacing*4, 0);
-    new planet("Jupiter", 40, 40, "Orange", spacing*5, 0);
-    new planet("Saturn", 40, 40, "Beige", spacing*6, 0);
-    new planet("Uranus", 30, 30, "LightBlue", spacing*7, 0);
-    new planet("Neptune", 30, 30, "CornflowerBlue", spacing*8, 0);
+    theSun = new sun(80, 80, "Orange");
+    new planet("Mercury", 10, 10, "Gray", spacing*2, 0);
+    new planet("Venus", 20, 20, "Beige", spacing*3, 0);
+    earth = new planet("Earth", 20, 20, "DodgerBlue", spacing*4, 0);
+    new planet("Mars", 15, 15, "Tomato", spacing*5, 0);
+    new planet("Jupiter", 40, 40, "Orange", spacing*7, 0);
+    new planet("Saturn", 40, 40, "Beige", spacing*8, 0);
+    new planet("Uranus", 30, 30, "LightBlue", spacing*9, 0);
+    new planet("Neptune", 30, 30, "CornflowerBlue", spacing*10, 0);
 
     this.interval = setInterval(update, 20);  
 }  
