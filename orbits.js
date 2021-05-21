@@ -1,21 +1,21 @@
 var innerWidth = window.innerWidth
 var innerHeight = window.innerHeight
 
-
-var spacing = innerHeight / 15 // spacing between planets
+var spacing = innerHeight / 10 // spacing between planets
 
 var sunImg = document.createElement("img");
 sunImg.src = "sun.png";
 
 function start() {  
     area.start();  
-    theSun = new sun(50, 50, "orange", innerWidth/2, innerHeight/2);
-    mercury = new planet(20, 20, "gray", innerWidth/2, innerHeight/2 - spacing);
-    venus = new planet(20, 20, "beige", innerWidth/2, innerHeight/2 - spacing*2);
+    theSun = new sun(50, 50, "orange");
+    mercury = new planet(20, 20, "gray", spacing);
+    venus = new planet(20, 20, "beige", spacing*2);
 
     this.interval = setInterval(update, 20);  
 }  
-  
+
+// canvas element
 var area = {  
     canvas : document.createElement("canvas"),  
     start : function() {  
@@ -29,11 +29,12 @@ var area = {
     }  
 } 
 
-function sun(width, height, color, x, y) {  
+// object for drawing sun
+function sun(width, height, color) {  
     this.width = width;  
     this.height = height;  
-    this.x = x;  
-    this.y = y;
+    this.x = (innerWidth - this.width)/2;
+    this.y = (innerHeight - this.height)/2;
     ctx = area.context;  
     ctx.fillStyle = color;  
     ctx.drawImage(sunImg, this.x, this.y, this.width, this.height);  
@@ -43,38 +44,36 @@ function sun(width, height, color, x, y) {
         ctx.drawImage(sunImg, this.x, this.y, this.width, this.height);  
     }
 }  
-  
-function planet(width, height, color, x, y) {  
+
+// object for drawing planets
+function planet(width, height, color, radius) {  
     this.width = width;  
     this.height = height;  
-    this.x = x;  
-    this.y = y;
-    this.movingLeft = true;
+    this.radius = radius;
+    this.angle = 0; // angle counterclockwise from horizontal in radians
+    this.speed = getSpeed(radius); // angular speed of planet in rads / update
     ctx = area.context;  
     ctx.fillStyle = color;  
-    ctx.fillRect(this.x, this.y, this.width, this.height);  
+    ctx.fillRect((innerWidth - this.width)/2 + this.radius, (innerHeight - this.height)/2, this.width, this.height);  
 
-    this.update = function(){   
-        if(this.x < innerWidth / 3) {
-            this.movingLeft = false
-        }
-        if(this.x > 2 * innerWidth / 3) {
-            this.movingLeft = true
-        }
-
-        if (this.movingLeft == true) {
-            this.x = this.x - 1;
-        }
-        else {
-            this.x = this.x + 1
-        }
+    this.update = function(){  
+        this.angle += this.speed; 
+        x = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius
+        y = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius
 
         ctx = area.context;  
         ctx.fillStyle = color;  
-        ctx.fillRect(this.x, this.y, this.width, this.height);  
+        ctx.fillRect(x, y, this.width, this.height);  
     }
 }  
 
+// gets angular speed from radius
+function getSpeed(r) {
+    c = 150 // constant for adjusting speeds
+    return c * 1/(r*r) // angular velocity obeys inverse square law
+}
+
+// controlles how the page updates each cycle
 function update() {
     area.clear()
     theSun.update()
