@@ -1,16 +1,27 @@
-var innerWidth = window.innerWidth
-var innerHeight = window.innerHeight
-
-var spacing = innerHeight / 10 // spacing between planets
-
 var sunImg = document.createElement("img");
 sunImg.src = "sun.png";
 
+var innerWidth;
+var innerHeight;
+var spacing;
+var planets;
+
 function start() {  
+    innerWidth = window.innerWidth
+    innerHeight = window.innerHeight
+    spacing = innerHeight / 10 // spacing between planets
+    planets = new Array();
+
     area.start();  
-    theSun = new sun(50, 50, "orange");
-    mercury = new planet(20, 20, "gray", spacing);
-    venus = new planet(20, 20, "beige", spacing*2);
+    theSun = new sun(50, 50, "Orange");
+    new planet("Mercury", 10, 10, "Gray", spacing, 0);
+    new planet("Venus", 20, 20, "Beige", spacing*2, 0);
+    earth = new planet("Earth", 20, 20, "DodgerBlue", spacing*3, 0);
+    new planet("Mars", 15, 15, "Tomato", spacing*4, 0);
+    new planet("Jupiter", 40, 40, "Orange", spacing*5, 0);
+    new planet("Saturn", 40, 40, "Beige", spacing*6, 0);
+    new planet("Uranus", 30, 30, "LightBlue", spacing*7, 0);
+    new planet("Neptune", 30, 30, "CornflowerBlue", spacing*8, 0);
 
     this.interval = setInterval(update, 20);  
 }  
@@ -46,11 +57,13 @@ function sun(width, height, color) {
 }  
 
 // object for drawing planets
-function planet(width, height, color, radius) {  
+function planet(name, width, height, color, radius, angle) { 
+    planets.push(this); 
+    this.name = name
     this.width = width;  
     this.height = height;  
     this.radius = radius;
-    this.angle = 0; // angle counterclockwise from horizontal in radians
+    this.angle = angle; // angle counterclockwise from horizontal in radians
     this.speed = getSpeed(radius); // angular speed of planet in rads / update
     ctx = area.context;  
     ctx.fillStyle = color;  
@@ -69,7 +82,7 @@ function planet(width, height, color, radius) {
 
 // gets angular speed from radius
 function getSpeed(r) {
-    c = 150 // constant for adjusting speeds
+    c = 400 // constant for adjusting speeds
     return c * 1/(r*r) // angular velocity obeys inverse square law
 }
 
@@ -77,6 +90,7 @@ function getSpeed(r) {
 function update() {
     area.clear()
     theSun.update()
-    mercury.update()
-    venus.update()
+    for (p of planets) {
+        p.update();
+    }
 }
