@@ -35,8 +35,7 @@ function start() {
     // creates new rocket when spacebar pressed
     document.addEventListener('keydown', function(e) {
         if(e.which == 32) {
-            new rocket(2, launchAngle);                                     // TODO: add "cursor" for rockets
-            console.log(rockets); // TEMPORARY
+            new rocket(2, launchAngle);
         }
     })      
 }  
@@ -59,6 +58,7 @@ var area = {
 function sun(width, height, img) {  
     this.width = width;  
     this.height = height;  
+    this.mass = width * height;
     this.x = (innerWidth - this.width)/2;
     this.y = (innerHeight - this.height)/2;
     this.img = img
@@ -147,5 +147,21 @@ function update() {
         rockets[k].update();
     }
 
-    launchAngle += 0.02; // increases launch angle (units are rad / update)
+    launchAngle += 0.02; // increases launch angle (units are rad / update
+    drawArrow();
+}
+
+function drawArrow(){
+    radius = 10; // radius from Earth of arrow
+    width = 5;
+    height = 5;
+
+    xEarth = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius
+    yEarth = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius
+    x = xEarth + Math.cos(launchAngle) * radius;
+    y = yEarth + Math.sin(launchAngle) * radius;
+
+    ctx = area.context;  
+    ctx.fillStyle = "White";  
+    ctx.fillRect(x, y, width, height);  
 }
