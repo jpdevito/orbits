@@ -1,6 +1,11 @@
 var sunImg = document.createElement("img");
 sunImg.src = "sun.png";
 
+var G = 0.1; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
+// pixels = unit of length
+// pixelmass = unit of mass (one square pixel, in this program volume = mass)
+// updates = unit of time
+
 var innerWidth;
 var innerHeight;
 var spacing;
@@ -61,7 +66,7 @@ function sun(width, height, img) {
     this.mass = width * height;
     this.x = (innerWidth - this.width)/2;
     this.y = (innerHeight - this.height)/2;
-    this.img = img
+    this.img = img;
     ctx = area.context;  
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
 
@@ -87,8 +92,8 @@ function planet(name, width, height, color, radius, angle) {
 
     this.update = function(){  
         this.angle += this.angSpeed; 
-        x = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius
-        y = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius
+        x = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius;
+        y = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius;
 
         ctx = area.context;  
         ctx.fillStyle = color;  
@@ -98,8 +103,8 @@ function planet(name, width, height, color, radius, angle) {
 
 // gets angular speed from radius
 function getAngSpeed(r) {
-    c = 400 // multiplier for adjusting speeds
-    return c * 1/(r*r) // angular velocity obeys inverse square law
+    mu = G * theSun.mass; // standard gravitational parameter
+    return Math.sqrt(mu) * (Math.pow(r, -1.5)); // derived angular velocity formula for circular orbit
 }
 
 // object for drawing rockets
@@ -111,8 +116,8 @@ function rocket(launchVel, launchAngle) {
     this.height = 10;
     this.launchVel = launchVel;
     this.launchAngle = launchAngle;
-    this.x = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius
-    this.y = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius
+    this.x = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius;
+    this.y = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius;
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
     this.xVel = (-1 * earthVel * Math.sin(earth.angle)) + (this.launchVel * Math.cos(this.launchAngle)); // velocity in x direction (right is positive)
     this.yVel = (-1 * earthVel * Math.cos(earth.angle)) + (this.launchVel * Math.sin(this.launchAngle)); // velocity in y direction (down is positive)
@@ -138,7 +143,7 @@ function rocket(launchVel, launchAngle) {
 
 // controls how the page updates each cycle
 function update() {
-    area.clear()
+    area.clear();
     theSun.update()
     for (p of planets) {
         p.update();
@@ -156,8 +161,8 @@ function drawArrow(){
     width = 5;
     height = 5;
 
-    xEarth = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius
-    yEarth = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius
+    xEarth = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius;
+    yEarth = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius;
     x = xEarth + Math.cos(launchAngle) * radius;
     y = yEarth + Math.sin(launchAngle) * radius;
 
