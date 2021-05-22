@@ -7,6 +7,7 @@ var spacing;
 var planets;
 var rockets;
 var rocketCounter;
+var launchAngle;
 
 function start() {  
     innerWidth = window.innerWidth
@@ -15,6 +16,7 @@ function start() {
     planets = []; // array to keep track of planets
     rockets = {}; // dictionary to keep track of rockets
     rocketCounter = 0;
+    launchAngle = 0;
 
     area.start();  
 
@@ -33,7 +35,7 @@ function start() {
     // creates new rocket when spacebar pressed
     document.addEventListener('keydown', function(e) {
         if(e.which == 32) {
-            new rocket();
+            new rocket(2, launchAngle);                                     // TODO: add "cursor" for rockets
             console.log(rockets); // TEMPORARY
         }
     })      
@@ -101,17 +103,19 @@ function getAngSpeed(r) {
 }
 
 // object for drawing rockets
-function rocket() {
+function rocket(launchVel, launchAngle) {
     rocketCounter++;
     this.id = rocketCounter;
     rockets[this.id] = this;
     this.width = 10;
     this.height = 10;
+    this.launchVel = launchVel;
+    this.launchAngle = launchAngle;
     this.x = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius
     this.y = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
-    this.xVel = -1 * earthVel * Math.sin(earth.angle); // velocity in x direction (right is positive)
-    this.yVel = -1 * earthVel * Math.cos(earth.angle); // velocity in y direction (down is positive)
+    this.xVel = (-1 * earthVel * Math.sin(earth.angle)) + (this.launchVel * Math.cos(this.launchAngle)); // velocity in x direction (right is positive)
+    this.yVel = (-1 * earthVel * Math.cos(earth.angle)) + (this.launchVel * Math.sin(this.launchAngle)); // velocity in y direction (down is positive)
     
     ctx = area.context;  
     ctx.fillStyle = "White";  
@@ -132,7 +136,7 @@ function rocket() {
     }
 }
 
-// controlles how the page updates each cycle
+// controls how the page updates each cycle
 function update() {
     area.clear()
     theSun.update()
@@ -142,4 +146,6 @@ function update() {
     for (k in rockets) {
         rockets[k].update();
     }
+
+    launchAngle += 0.02; // increases launch angle (units are rad / update)
 }
