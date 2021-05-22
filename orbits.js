@@ -40,7 +40,7 @@ function start() {
     // creates new rocket when spacebar pressed
     document.addEventListener('keydown', function(e) {
         if(e.which == 32) {
-            new rocket(2, launchAngle);
+            new rocket(1, launchAngle);
         }
     })      
 }  
@@ -127,6 +127,23 @@ function rocket(launchVel, launchAngle) {
     ctx.fillRect(this.x, this.y, this.width, this.height);  
 
     this.update = function() {
+
+        // distance to the sun
+        xDist = theSun.x - this.x + (theSun.width/2) - (this.width/2)
+        yDist = theSun.y - this.y + (theSun.height/2) - (this.height/2)
+
+        // accelerations, derived from Newton's formula for gravitational force
+        xAccel = G * theSun.mass * xDist * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5)
+        yAccel = G * theSun.mass * yDist * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5)
+
+        console.log(xAccel)
+        console.log(yAccel)
+
+        // updates velcities from accelerations
+        this.xVel += xAccel
+        this.yVel += yAccel
+
+        // updates position from velocities
         this.x += this.xVel;
         this.y += this.yVel;
 
