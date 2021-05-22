@@ -1,5 +1,29 @@
 var sunImg = document.createElement("img");
-sunImg.src = "sun.png";
+sunImg.src = "images/sun.png";
+
+var mercuryImg = document.createElement("img");
+mercuryImg.src = "images/mercury.png";
+
+var venusImg = document.createElement("img");
+venusImg.src = "images/venus.png";
+
+var earthImg = document.createElement("img");
+earthImg.src = "images/earth.png";
+
+var marsImg = document.createElement("img");
+marsImg.src = "images/mars.png";
+
+var jupiterImg = document.createElement("img");
+jupiterImg.src = "images/jupiter.png";
+
+var saturnImg = document.createElement("img");
+saturnImg.src = "images/saturn.png";
+
+var uranusImg = document.createElement("img");
+uranusImg.src = "images/uranus.png";
+
+var neptuneImg = document.createElement("img");
+neptuneImg.src = "images/neptune.png";
 
 var G = 0.1; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
 // pixels = unit of length
@@ -25,15 +49,15 @@ function start() {
 
     area.start();  
 
-    theSun = new sun(80, 80, sunImg);
-    new planet("Mercury", 10, 10, "Gray", spacing*2, 0);
-    new planet("Venus", 20, 20, "Beige", spacing*3, 0);
-    earth = new planet("Earth", 20, 20, "DodgerBlue", spacing*4, 0);
-    new planet("Mars", 15, 15, "Tomato", spacing*5, 0);
-    new planet("Jupiter", 40, 40, "Orange", spacing*7, 0);
-    new planet("Saturn", 40, 40, "Beige", spacing*8, 0);
-    new planet("Uranus", 30, 30, "LightBlue", spacing*9, 0);
-    new planet("Neptune", 30, 30, "CornflowerBlue", spacing*10, 0);
+    theSun = new sun(96, 96, sunImg);
+    new planet("Mercury", 16, 16, mercuryImg, spacing*2, 0);
+    new planet("Venus", 32, 32, venusImg, spacing*3, 0);
+    earth = new planet("Earth", 32, 32, earthImg, spacing*4, 0);
+    new planet("Mars", 24, 24, marsImg, spacing*5, 0);
+    new planet("Jupiter", 80, 80, jupiterImg, spacing*7, 0);
+    new planet("Saturn", 80, 80, saturnImg, spacing*9, 0);
+    new planet("Uranus", 64, 64, uranusImg, spacing*11, 0);
+    new planet("Neptune", 64, 64, neptuneImg, spacing*13, 0);
 
     this.interval = setInterval(update, 20);  
 
@@ -77,7 +101,7 @@ function sun(width, height, img) {
 }  
 
 // object for drawing planets
-function planet(name, width, height, color, radius, angle) { 
+function planet(name, width, height, img, radius, angle) { 
     planets.push(this); 
     this.name = name
     this.width = width;  
@@ -86,18 +110,17 @@ function planet(name, width, height, color, radius, angle) {
     this.mass = width * height;
     this.angle = angle; // angle counterclockwise from horizontal in radians
     this.angSpeed = getAngSpeed(radius); // angular speed of planet in rads / update
-    ctx = area.context;  
-    ctx.fillStyle = color;  
-    ctx.fillRect((innerWidth - this.width)/2 + this.radius, (innerHeight - this.height)/2, this.width, this.height);  
+    this.img = img
+    ctx = area.context;   
+    ctx.drawImage(this.img, (innerWidth - this.width)/2 + this.radius, (innerHeight - this.height)/2, this.width, this.height);  
 
     this.update = function(){  
         this.angle += this.angSpeed; 
         x = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius;
         y = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius;
 
-        ctx = area.context;  
-        ctx.fillStyle = color;  
-        ctx.fillRect(x, y, this.width, this.height);  
+        ctx = area.context;   
+        ctx.drawImage(this.img, x, y, this.width, this.height);  
     }
 }  
 
