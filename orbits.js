@@ -197,7 +197,7 @@ function update() {
 }
 
 function drawArrow(){
-    radius = 10; // radius from Earth of arrow
+    radius = 30; // radius from Earth of arrow
     width = 5;
     height = 5;
 
@@ -207,6 +207,6 @@ function drawArrow(){
     y = yEarth + Math.sin(launchAngle) * radius;
 
     ctx = area.context;  
-    ctx.fillStyle = "White";  
+    ctx.fillStyle = "Red";  
     ctx.fillRect(x, y, width, height);  
 }
