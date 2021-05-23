@@ -88,15 +88,15 @@ function sun(width, height, img) {
     this.width = width;  
     this.height = height;  
     this.mass = width * height;
-    this.x = (innerWidth - this.width)/2;
-    this.y = (innerHeight - this.height)/2;
+    this.x = (innerWidth)/2;
+    this.y = (innerHeight)/2;
     this.img = img;
     ctx = area.context;  
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
 
     this.update = function(){   
         ctx = area.context;  
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
+        ctx.drawImage(this.img, this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
     }
 }  
 
@@ -116,11 +116,11 @@ function planet(name, width, height, img, radius, angle) {
 
     this.update = function(){  
         this.angle += this.angSpeed; 
-        x = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius;
-        y = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius;
+        xToDraw = (innerWidth - this.width)/2 + Math.cos(this.angle) * this.radius;
+        yToDraw = (innerHeight - this.height)/2 - Math.sin(this.angle) * this.radius;
 
         ctx = area.context;   
-        ctx.drawImage(this.img, x, y, this.width, this.height);  
+        ctx.drawImage(this.img, xToDraw, yToDraw, this.width, this.height);  
     }
 }  
 
@@ -139,30 +139,30 @@ function rocket(launchVel, launchAngle) {
     this.height = 10;
     this.launchVel = launchVel;
     this.launchAngle = launchAngle;
-    this.x = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius;
-    this.y = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius;
+    this.x = (innerWidth/2) + Math.cos(earth.angle) * earth.radius;
+    this.y = (innerHeight/2) - Math.sin(earth.angle) * earth.radius;
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
     this.xVel = (-1 * earthVel * Math.sin(earth.angle)) + (this.launchVel * Math.cos(this.launchAngle)); // velocity in x direction (right is positive)
     this.yVel = (-1 * earthVel * Math.cos(earth.angle)) + (this.launchVel * Math.sin(this.launchAngle)); // velocity in y direction (down is positive)
     
     ctx = area.context;  
     ctx.fillStyle = "White";  
-    ctx.fillRect(this.x, this.y, this.width, this.height);  
+    ctx.fillRect(this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
 
     this.update = function() {
+        xAccel = 0;
+        yAccel = 0;
 
         // distance to the sun
-        xDist = theSun.x - this.x + (theSun.width/2) - (this.width/2)
-        yDist = theSun.y - this.y + (theSun.height/2) - (this.height/2)
+        xDist = theSun.x - this.x
+        yDist = theSun.y - this.y
 
-        // accelerations, derived from Newton's formula for gravitational force
-        xAccel = G * theSun.mass * xDist * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5)
-        yAccel = G * theSun.mass * yDist * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5)
+        // accelerations from the sun, derived from Newton's formula for gravitational force
+        mult = G * theSun.mass * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5) // multiplier in formula used to find both accelerations
+        xAccel += mult * xDist
+        yAccel += mult * yDist
 
-        console.log(xAccel)
-        console.log(yAccel)
-
-        // updates velcities from accelerations
+        // updates velocities from accelerations
         this.xVel += xAccel
         this.yVel += yAccel
 
@@ -177,7 +177,7 @@ function rocket(launchVel, launchAngle) {
         
         ctx = area.context;  
         ctx.fillStyle = "White";  
-        ctx.fillRect(this.x, this.y, this.width, this.height);  
+        ctx.fillRect(this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
     }
 }
 
