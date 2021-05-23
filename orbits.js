@@ -1,41 +1,25 @@
-var sunImg = document.createElement("img");
-sunImg.src = "images/sun.png";
+var sunImg;
+var mercuryImg;
+var venusImg;
+var earthImg;
+var marsImg;
+var jupiterImg;
+var saturnImg;
+var uranusImg;
+var neptuneImg;
 
-var mercuryImg = document.createElement("img");
-mercuryImg.src = "images/mercury.png";
-
-var venusImg = document.createElement("img");
-venusImg.src = "images/venus.png";
-
-var earthImg = document.createElement("img");
-earthImg.src = "images/earth.png";
-
-var marsImg = document.createElement("img");
-marsImg.src = "images/mars.png";
-
-var jupiterImg = document.createElement("img");
-jupiterImg.src = "images/jupiter.png";
-
-var saturnImg = document.createElement("img");
-saturnImg.src = "images/saturn.png";
-
-var uranusImg = document.createElement("img");
-uranusImg.src = "images/uranus.png";
-
-var neptuneImg = document.createElement("img");
-neptuneImg.src = "images/neptune.png";
-
-var G = 0.1; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
+var G; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
 // pixels = unit of length
 // pixelmass = unit of mass (one square pixel, in this program volume = mass)
 // updates = unit of time
-
+var usePlanetGrav;
 var innerWidth;
 var innerHeight;
 var spacing;
 var planets;
 var rockets;
 var rocketCounter;
+var launchVel;
 var launchAngle;
 
 function start() {  
@@ -44,9 +28,15 @@ function start() {
     spacing = innerWidth / 30 // spacing between planets
     planets = []; // array to keep track of planets
     rockets = {}; // dictionary to keep track of rockets
-    rocketCounter = 0;
-    launchAngle = 0;
+    rocketCounter = 0; // to give each rocket unique ID
+    launchAngle = 0; // gets incremeneted in update function
 
+    // can be changed
+    G = 0.02;
+    usePlanetGrav = true;
+    launchVel = 1;
+
+    loadImages();
     area.start();  
 
     theSun = new sun(96, 96, sunImg);
@@ -64,7 +54,7 @@ function start() {
     // creates new rocket when spacebar pressed
     document.addEventListener('keydown', function(e) {
         if(e.which == 32) {
-            new rocket(1, launchAngle);
+            new rocket(launchVel, launchAngle);
         }
     })      
 }  
@@ -157,17 +147,32 @@ function rocket(launchVel, launchAngle) {
         yAccel = 0;
 
         // distance to the sun
-        xDist = theSun.x - this.x
-        yDist = theSun.y - this.y
+        xDist = theSun.x - this.x;
+        yDist = theSun.y - this.y;
 
         // accelerations from the sun, derived from Newton's formula for gravitational force
-        mult = G * theSun.mass * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5) // multiplier in formula used to find both accelerations
-        xAccel += mult * xDist
-        yAccel += mult * yDist
+        mult = G * theSun.mass * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5); // multiplier in formula used to find both accelerations
+        xAccel += mult * xDist;
+        yAccel += mult * yDist;
+        
+        if(usePlanetGrav) {
+            for (p of planets) {
+                // distance to each planet
+                xPlanet = (innerWidth/2) + Math.cos(p.angle) * p.radius;
+                yPlanet = (innerHeight/2) - Math.sin(p.angle) * p.radius;
+                xDist = xPlanet - this.x;
+                yDist = yPlanet - this.y;
+                
+                // accelerations from each planet
+                mult = G * p.mass * Math.pow(Math.pow(xDist, 2) + Math.pow(yDist, 2), -1.5); // multiplier in formula used to find both accelerations
+                xAccel += mult * xDist;
+                yAccel += mult * yDist;
+            }
+        }
 
         // updates velocities from accelerations
-        this.xVel += xAccel
-        this.yVel += yAccel
+        this.xVel += xAccel;
+        this.yVel += yAccel;
 
         // updates position from velocities
         this.x += this.xVel;
@@ -212,4 +217,33 @@ function drawArrow(){
     ctx = area.context;  
     ctx.fillStyle = "Red";  
     ctx.fillRect(xToDraw, yToDraw, width, height);  
+}
+
+function loadImages() {
+    sunImg = document.createElement("img");
+    sunImg.src = "images/sun.png";
+
+    mercuryImg = document.createElement("img");
+    mercuryImg.src = "images/mercury.png";
+
+    venusImg = document.createElement("img");
+    venusImg.src = "images/venus.png";
+
+    earthImg = document.createElement("img");
+    earthImg.src = "images/earth.png";
+
+    marsImg = document.createElement("img");
+    marsImg.src = "images/mars.png";
+
+    jupiterImg = document.createElement("img");
+    jupiterImg.src = "images/jupiter.png";
+
+    saturnImg = document.createElement("img");
+    saturnImg.src = "images/saturn.png";
+
+    uranusImg = document.createElement("img");
+    uranusImg.src = "images/uranus.png";
+
+    neptuneImg = document.createElement("img");
+    neptuneImg.src = "images/neptune.png";
 }
