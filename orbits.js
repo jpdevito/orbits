@@ -41,7 +41,7 @@ var launchAngle;
 function start() {  
     innerWidth = window.innerWidth
     innerHeight = window.innerHeight
-    spacing = innerHeight / 15 // spacing between planets
+    spacing = innerWidth / 30 // spacing between planets
     planets = []; // array to keep track of planets
     rockets = {}; // dictionary to keep track of rockets
     rocketCounter = 0;
@@ -139,8 +139,11 @@ function rocket(launchVel, launchAngle) {
     this.height = 10;
     this.launchVel = launchVel;
     this.launchAngle = launchAngle;
-    this.x = (innerWidth/2) + Math.cos(earth.angle) * earth.radius;
-    this.y = (innerHeight/2) - Math.sin(earth.angle) * earth.radius;
+    launchRadius = 30; // radius from Earth that the rockets start from
+    xEarth = (innerWidth/2) + Math.cos(earth.angle) * earth.radius;
+    yEarth = (innerHeight/2) - Math.sin(earth.angle) * earth.radius;
+    this.x = xEarth + Math.cos(launchAngle) * launchRadius;
+    this.y = yEarth + Math.sin(launchAngle) * launchRadius;
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
     this.xVel = (-1 * earthVel * Math.sin(earth.angle)) + (this.launchVel * Math.cos(this.launchAngle)); // velocity in x direction (right is positive)
     this.yVel = (-1 * earthVel * Math.cos(earth.angle)) + (this.launchVel * Math.sin(this.launchAngle)); // velocity in y direction (down is positive)
@@ -201,12 +204,12 @@ function drawArrow(){
     width = 5;
     height = 5;
 
-    xEarth = (innerWidth - this.width)/2 + Math.cos(earth.angle) * earth.radius;
-    yEarth = (innerHeight - this.height)/2 - Math.sin(earth.angle) * earth.radius;
-    x = xEarth + Math.cos(launchAngle) * radius;
-    y = yEarth + Math.sin(launchAngle) * radius;
+    xEarth = (innerWidth/2) + Math.cos(earth.angle) * earth.radius;
+    yEarth = (innerHeight/2) - Math.sin(earth.angle) * earth.radius;
+    xToDraw = xEarth - (this.width/2) + Math.cos(launchAngle) * radius;
+    yToDraw = yEarth - (this.height/2) + Math.sin(launchAngle) * radius;
 
     ctx = area.context;  
     ctx.fillStyle = "Red";  
-    ctx.fillRect(x, y, width, height);  
+    ctx.fillRect(xToDraw, yToDraw, width, height);  
 }
