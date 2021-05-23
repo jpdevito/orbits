@@ -224,10 +224,8 @@ function drawArrow(){
     width = 5;
     height = 5;
 
-    xEarth = (innerWidth/2) + Math.cos(earth.angle) * earth.radius;
-    yEarth = (innerHeight/2) - Math.sin(earth.angle) * earth.radius;
-    xToDraw = xEarth - (this.width/2) + Math.cos(launchAngle) * radius;
-    yToDraw = yEarth - (this.height/2) + Math.sin(launchAngle) * radius;
+    xToDraw = earth.x - (this.width/2) + Math.cos(launchAngle) * radius;
+    yToDraw = earth.y - (this.height/2) + Math.sin(launchAngle) * radius;
 
     ctx = area.context;  
     ctx.fillStyle = "Red";  
