@@ -36,20 +36,21 @@ function start() {
     G = 0.02;
     usePlanetGrav = true;
     useCollisions = true;
+    planetScale = 4;
     launchVel = 1;
 
     loadImages();
     area.start();  
 
-    theSun = new sun(96, 96, sunImg);
-    new planet("Mercury", 16, 16, mercuryImg, spacing*2, 0);
-    new planet("Venus", 32, 32, venusImg, spacing*3, 0);
-    earth = new planet("Earth", 32, 32, earthImg, spacing*4, 0);
-    new planet("Mars", 24, 24, marsImg, spacing*5, 0);
-    new planet("Jupiter", 80, 80, jupiterImg, spacing*7, 0);
-    new planet("Saturn", 80, 80, saturnImg, spacing*9, 0);
-    new planet("Uranus", 64, 64, uranusImg, spacing*11, 0);
-    new planet("Neptune", 64, 64, neptuneImg, spacing*13, 0);
+    theSun = new sun(24*planetScale, 24*planetScale, sunImg);
+    new planet("Mercury", 4*planetScale, 4*planetScale, mercuryImg, spacing*2, 0);
+    new planet("Venus", 8*planetScale, 8*planetScale, venusImg, spacing*3, 0);
+    earth = new planet("Earth", 8*planetScale, 8*planetScale, earthImg, spacing*4, 0);
+    new planet("Mars", 6*planetScale, 6*planetScale, marsImg, spacing*5, 0);
+    new planet("Jupiter", 20*planetScale, 20*planetScale, jupiterImg, spacing*7, 0);
+    new planet("Saturn", 20*planetScale, 20*planetScale, saturnImg, spacing*9, 0);
+    new planet("Uranus", 16*planetScale, 16*planetScale, uranusImg, spacing*11, 0);
+    new planet("Neptune", 16*planetScale, 16*planetScale, neptuneImg, spacing*13, 0);
 
     this.interval = setInterval(update, 20);  
 
@@ -133,7 +134,7 @@ function rocket(launchVel, launchAngle) {
     this.height = 10;
     this.launchVel = launchVel;
     this.launchAngle = launchAngle;
-    launchRadius = 30; // radius from Earth that the rockets start from
+    launchRadius = 8*planetScale; // radius from Earth that the rockets start from
     this.x = earth.x + Math.cos(launchAngle) * launchRadius;
     this.y = earth.y + Math.sin(launchAngle) * launchRadius;
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
@@ -219,7 +220,7 @@ function update() {
 }
 
 function drawArrow(){
-    radius = 30; // radius from Earth of arrow
+    radius = 8*planetScale; // radius from Earth of arrow
     width = 5;
     height = 5;
 
