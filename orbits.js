@@ -61,7 +61,10 @@ function start() {
         if(e.which == 32) {
             new rocket(launchAngle);
         }
-    })      
+    });
+    // creates new rocket when mouse clicked (on canvas)
+    canvasElem = document.querySelector("canvas");
+    canvasElem.addEventListener("mousedown", function() {new rocket(launchAngle);});
 }  
 
 // canvas element
