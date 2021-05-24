@@ -17,6 +17,7 @@ var useCollisions;
 var innerWidth;
 var innerHeight;
 var spacing;
+var planetScale;
 var planets;
 var rockets;
 var rocketCounter;
@@ -33,31 +34,31 @@ function start() {
     launchAngle = 0; // gets incremeneted in update function
 
     // can be changed
-    G = 0.02;
-    usePlanetGrav = true;
-    useCollisions = true;
-    planetScale = 4;
-    launchVel = 1;
+    G = document.getElementById("gravConst").value;
+    usePlanetGrav = document.getElementById("gravPlanets").checked;
+    useCollisions = document.getElementById("collisions").checked;
+    planetScale = document.getElementById("planetScale").value;
+    launchVel = document.getElementById("launchVel").value;
 
     loadImages();
     area.start();  
 
-    theSun = new sun(24*planetScale, 24*planetScale, sunImg);
-    new planet("Mercury", 4*planetScale, 4*planetScale, mercuryImg, spacing*2, 0);
-    new planet("Venus", 8*planetScale, 8*planetScale, venusImg, spacing*3, 0);
-    earth = new planet("Earth", 8*planetScale, 8*planetScale, earthImg, spacing*4, 0);
-    new planet("Mars", 6*planetScale, 6*planetScale, marsImg, spacing*5, 0);
-    new planet("Jupiter", 20*planetScale, 20*planetScale, jupiterImg, spacing*7, 0);
-    new planet("Saturn", 20*planetScale, 20*planetScale, saturnImg, spacing*9, 0);
-    new planet("Uranus", 16*planetScale, 16*planetScale, uranusImg, spacing*11, 0);
-    new planet("Neptune", 16*planetScale, 16*planetScale, neptuneImg, spacing*13, 0);
+    theSun = new sun(24, 24, sunImg);
+    new planet("Mercury", 4, 4, mercuryImg, spacing*2, 0);
+    new planet("Venus", 4, 4, venusImg, spacing*3, 0);
+    earth = new planet("Earth", 8, 8, earthImg, spacing*4, 0);
+    new planet("Mars", 6, 6, marsImg, spacing*5, 0);
+    new planet("Jupiter", 20, 20, jupiterImg, spacing*7, 0);
+    new planet("Saturn", 20, 20, saturnImg, spacing*9, 0);
+    new planet("Uranus", 16, 16, uranusImg, spacing*11, 0);
+    new planet("Neptune", 16, 16, neptuneImg, spacing*13, 0);
 
     this.interval = setInterval(update, 20);  
 
     // creates new rocket when spacebar pressed
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener("keydown", function(e) {
         if(e.which == 32) {
-            new rocket(launchVel, launchAngle);
+            new rocket(launchAngle);
         }
     })      
 }  
@@ -77,10 +78,12 @@ var area = {
 } 
 
 // object for drawing sun
-function sun(width, height, img) {  
-    this.width = width;  
-    this.height = height;  
-    this.mass = width * height;
+function sun(widthFactor, heightFactor, img) {  
+    this.widthFactor = widthFactor;
+    this.heightFactor = heightFactor;
+    this.width = this.widthFactor * planetScale;  
+    this.height = this.heightFactor * planetScale;  
+    this.mass = this.width * this.height;
     this.x = (innerWidth)/2;
     this.y = (innerHeight)/2;
     this.img = img;
@@ -88,19 +91,25 @@ function sun(width, height, img) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
 
     this.update = function(){   
+        // updates scale
+        this.width = this.widthFactor * planetScale;  
+        this.height = this.heightFactor * planetScale; 
+
         ctx = area.context;  
         ctx.drawImage(this.img, this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
     }
 }  
 
 // object for drawing planets
-function planet(name, width, height, img, radius, angle) { 
+function planet(name, widthFactor, heightFactor, img, radius, angle) { 
     planets.push(this); 
-    this.name = name
-    this.width = width;  
-    this.height = height;  
+    this.name = name;
+    this.widthFactor = widthFactor;
+    this.heightFactor = heightFactor;
+    this.width = this.widthFactor * planetScale;  
+    this.height = this.heightFactor * planetScale;  
     this.radius = radius;
-    this.mass = width * height;
+    this.mass = this.width * this.height;
     this.angle = angle; // angle counterclockwise from horizontal in radians
     this.angSpeed = getAngSpeed(radius); // angular speed of planet in rads / update
     this.x = (innerWidth/2) + Math.cos(this.angle) * this.radius;
@@ -110,6 +119,13 @@ function planet(name, width, height, img, radius, angle) {
     ctx.drawImage(this.img, (innerWidth - this.width)/2 + this.radius, (innerHeight - this.height)/2, this.width, this.height);  
 
     this.update = function(){  
+        // updates speed (from changes in G)
+        this.angSpeed = getAngSpeed(this.radius);
+
+        // updates scale
+        this.width = this.widthFactor * planetScale;  
+        this.height = this.heightFactor * planetScale;         
+
         this.angle += this.angSpeed; 
         this.x = (innerWidth/2) + Math.cos(this.angle) * this.radius;
         this.y = (innerHeight/2) - Math.sin(this.angle) * this.radius;
@@ -126,7 +142,7 @@ function getAngSpeed(r) {
 }
 
 // object for drawing rockets
-function rocket(launchVel, launchAngle) {
+function rocket(launchAngle) {
     rocketCounter++;
     this.id = rocketCounter;
     rockets[this.id] = this;
@@ -206,6 +222,13 @@ function rocket(launchVel, launchAngle) {
 
 // controls how the page updates each cycle
 function update() {
+    // update values from inputs
+    G = document.getElementById("gravConst").value;
+    usePlanetGrav = document.getElementById("gravPlanets").checked;
+    useCollisions = document.getElementById("collisions").checked;
+    planetScale = document.getElementById("planetScale").value;
+    launchVel = document.getElementById("launchVel").value;
+
     area.clear();
     theSun.update()
     for (p of planets) {

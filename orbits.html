@@ -5,11 +5,47 @@
             html, body {
                 margin: 0;
                 padding: 0;
-                background-color: #000000;  
+                background-color: #000000; 
+                z-index: 0; 
+            }
+            table {
+                font-family: Arial, Helvetica, sans-serif;
+                color: 000000;
+                font-size: 14px;
+                background-color: #ffffff; 
+                opacity: 0.9; 
+                padding: 10px;
+                border-radius: 10px;
+                position: absolute;
+                top: 70%;
+                left: 5%;
+                z-index: 1;
             }
         </style>
     </head>
     <body onload="start()">
         <script src="orbits.js"></script>
+        <table>
+            <tr>
+                <td>Gravitational Constant: </td>
+                <td><input type="number" min="0" max="1" step="0.01" value="0.02" style="width: 100px" id="gravConst"/></td>
+            </tr>
+            <tr>
+                <td>Launch Velocity:</td>
+                <td><input type="number" min="0" max="3" step="0.1" value="1" style="width: 100px" id="launchVel"/></td>
+            </tr>
+            <tr>
+                <td>Gravity From Planets: </td>
+                <td><input type="checkbox" checked id="gravPlanets"></td>
+            </tr>
+            <tr>
+                <td>Collisions: </td>
+                <td><input type="checkbox" checked id="collisions"></td>
+            </tr>
+            <tr>
+                <td>Planets & Sun Scale: </td>
+                <td><input type="range" min="1" max="4" value="4" style="width: 100px" id="planetScale"></td>
+            </tr>
+        </table>
     </body>
 </html>
