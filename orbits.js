@@ -7,10 +7,11 @@ var jupiterImg;
 var saturnImg;
 var uranusImg;
 var neptuneImg;
+var rocketImg;
 
 var G; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
 // pixels = unit of length
-// pixelmass = unit of mass (one square pixel, in this program volume = mass)
+// pixelmass = unit of mass (one square pixel before scaling, in this program volume = mass)
 // updates = unit of time
 var usePlanetGrav;
 var useCollisions;
@@ -146,20 +147,28 @@ function rocket(launchAngle) {
     rocketCounter++;
     this.id = rocketCounter;
     rockets[this.id] = this;
-    this.width = 10;
-    this.height = 10;
+    this.width = 16;
+    this.height = 16;
     this.launchVel = launchVel;
     this.launchAngle = launchAngle;
-    launchRadius = 8*planetScale; // radius from Earth that the rockets start from
-    this.x = earth.x + Math.cos(launchAngle) * launchRadius;
-    this.y = earth.y + Math.sin(launchAngle) * launchRadius;
+    launchRadius = 32; // radius from Earth that the rockets start from
+    this.x = earth.x + Math.cos(this.launchAngle) * launchRadius;
+    this.y = earth.y + Math.sin(this.launchAngle) * launchRadius;
+    this.img = rocketImg;
     earthVel = earth.angSpeed * earth.radius // magnitude of Earth's velocity in pixels / update
     this.xVel = (-1 * earthVel * Math.sin(earth.angle)) + (this.launchVel * Math.cos(this.launchAngle)); // velocity in x direction (right is positive)
     this.yVel = (-1 * earthVel * Math.cos(earth.angle)) + (this.launchVel * Math.sin(this.launchAngle)); // velocity in y direction (down is positive)
     
+    ctx = area.context;    
+
+    // changes ctx so rockets are drawn at an angle
     ctx = area.context;  
-    ctx.fillStyle = "White";  
-    ctx.fillRect(this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.launchAngle + (Math.PI/2));
+    ctx.drawImage(this.img, -(this.width/2), -(this.height/2), this.width, this.height);  
+    ctx.restore();
+    console.log(this.x)  
 
     this.update = function() {
         xAccel = 0;
@@ -215,8 +224,12 @@ function rocket(launchAngle) {
         }
         
         ctx = area.context;  
-        ctx.fillStyle = "White";  
-        ctx.fillRect(this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.launchAngle + (Math.PI/2));
+        ctx.drawImage(this.img, -(this.width/2), -(this.height/2), this.width, this.height);  
+        ctx.restore();
+        console.log(this.x)
     }
 }
 
@@ -282,4 +295,7 @@ function loadImages() {
 
     neptuneImg = document.createElement("img");
     neptuneImg.src = "images/neptune.png";
+
+    rocketImg = document.createElement("img");
+    rocketImg.src = "images/rocket.png";
 }
