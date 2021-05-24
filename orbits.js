@@ -54,15 +54,22 @@ function start() {
 
     this.interval = setInterval(update, 20);  
 
+    var inst = document.getElementById("inst"); // becomes hidden when pressed space or clicked
+    inst.style.display = "block"; // show for now
+
     // creates new rocket when spacebar pressed
     document.addEventListener("keydown", function(e) {
         if(e.which == 32) {
             new rocket(launchAngle);
+            inst.style.display = "none"; // hides instructions
         }
     });
     // creates new rocket when mouse clicked (on canvas)
     canvasElem = document.querySelector("canvas");
-    canvasElem.addEventListener("mousedown", function() {new rocket(launchAngle);});
+    canvasElem.addEventListener("mousedown", function() {
+        new rocket(launchAngle);
+        inst.style.display = "none"; // hides instructions
+    });
 }  
 
 // canvas element
@@ -259,6 +266,7 @@ function update() {
     drawArrow();
 }
 
+// draws the arrow that shows launch angle
 function drawArrow(){
     radius = 8*planetScale; // radius from Earth of arrow
     width = 16;
