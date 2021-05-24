@@ -45,7 +45,7 @@ function start() {
 
     theSun = new sun(24, 24, sunImg);
     new planet("Mercury", 4, 4, mercuryImg, spacing*2, 0);
-    new planet("Venus", 4, 4, venusImg, spacing*3, 0);
+    new planet("Venus", 8, 8, venusImg, spacing*3, 0);
     earth = new planet("Earth", 8, 8, earthImg, spacing*4, 0);
     new planet("Mars", 6, 6, marsImg, spacing*5, 0);
     new planet("Jupiter", 20, 20, jupiterImg, spacing*7, 0);
