@@ -93,7 +93,7 @@ function sun(widthFactor, heightFactor, img) {
     this.y = (innerHeight)/2;
     this.img = img;
     ctx = area.context;  
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);  
+    ctx.drawImage(this.img, this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
 
     this.update = function(){   
         // updates scale
