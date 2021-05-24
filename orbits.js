@@ -8,6 +8,7 @@ var saturnImg;
 var uranusImg;
 var neptuneImg;
 var rocketImg;
+var arrowImg;
 
 var G; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
 // pixels = unit of length
@@ -240,6 +241,9 @@ function rocket(launchAngle) {
 function update() {
     // update values from inputs
     G = document.getElementById("gravConst").value;
+    if(G < 0) { // prevents bug from edge case
+        G = 0;
+    }
     usePlanetGrav = document.getElementById("gravPlanets").checked;
     useCollisions = document.getElementById("collisions").checked;
     planetScale = document.getElementById("planetScale").value;
@@ -260,15 +264,19 @@ function update() {
 
 function drawArrow(){
     radius = 8*planetScale; // radius from Earth of arrow
-    width = 5;
-    height = 5;
+    width = 16;
+    height = 16;
 
-    xToDraw = earth.x - (this.width/2) + Math.cos(launchAngle) * radius;
-    yToDraw = earth.y - (this.height/2) + Math.sin(launchAngle) * radius;
+    xToDraw = earth.x + Math.cos(launchAngle) * radius;
+    yToDraw = earth.y + Math.sin(launchAngle) * radius;
 
     ctx = area.context;  
-    ctx.fillStyle = "Red";  
-    ctx.fillRect(xToDraw, yToDraw, width, height);  
+    ctx.save();
+    ctx.translate(xToDraw, yToDraw);
+    ctx.rotate(this.launchAngle + (Math.PI/2));
+    ctx.drawImage(arrowImg, -(width/2), -(height/2), width, height);  
+    ctx.restore();
+    console.log(this.x) 
 }
 
 function loadImages() {
@@ -301,4 +309,7 @@ function loadImages() {
 
     rocketImg = document.createElement("img");
     rocketImg.src = "images/rocket.png";
+
+    arrowImg = document.createElement("img");
+    arrowImg.src = "images/arrow.png";
 }
