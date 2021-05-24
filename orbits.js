@@ -10,10 +10,7 @@ var neptuneImg;
 var rocketImg;
 var arrowImg;
 
-var G; // gravitational constant (can adjust) in units of pixels^3 * pixelmass ^(-1) * updates^(-2)
-// pixels = unit of length
-// pixelmass = unit of mass (one square pixel before scaling, in this program volume = mass)
-// updates = unit of time
+var G;
 var usePlanetGrav;
 var useCollisions;
 var innerWidth;
@@ -35,7 +32,7 @@ function start() {
     rocketCounter = 0; // to give each rocket unique ID
     launchAngle = 0; // gets incremeneted in update function
 
-    // can be changed
+    // control panel variables
     G = document.getElementById("gravConst").value;
     usePlanetGrav = document.getElementById("gravPlanets").checked;
     useCollisions = document.getElementById("collisions").checked;
