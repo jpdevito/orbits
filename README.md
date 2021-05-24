@@ -1,5 +1,5 @@
 # Orbits
-I’ve always found orbital mechanics fascinating, so I made this fun and simple orbital mechanics simulator. The code is hosted at [this GitHub Pages site](jpdevito.github.io/orbits).
+I’ve always found orbital mechanics fascinating, so I made this fun and simple orbital mechanics simulator. The code is hosted at [this GitHub Pages site](https://jpdevito.github.io/orbits/).
 
 While the size of the planets and their distances from the sun are clearly unrealistic, I used formulas derived from Newton’s laws of gravitation to calculate the speed at which the planets orbit, and the motion of the rockets. The planets only experience gravity from the sun, not from each other, or else the solar system would not work on this scale.
 
