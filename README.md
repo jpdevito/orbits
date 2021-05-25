@@ -9,12 +9,12 @@ The units I used with the formulas are pixels for distance, updates (when the gr
 There is a control panel on the bottom left of the page that allows you to change some parameters, this is what they each are:
 
 ***Gravitational Constant***  
-The universal constant “G” which affects the speed at which the planets revolve around the sun (so they stay in orbit) and how strongly the rockets are pulled to the sun/planets.
-Units: pixels^3 * pixelmass^(-1) * updates^(-2)
+The universal constant “G” which affects the speed at which the planets revolve around the sun (so they stay in orbit) and how strongly the rockets are pulled to the sun/planets.  
+<sub>(Units: pixels<sup>3</sup> x pixelmass<sup>-1</sup> x updates<sup>-2</sup>)</sub>
 
 ***Launch Velocity***  
-The speed that the rockets start at.
-Units: pixels per update
+The speed that the rockets start at.  
+<sub>(Units: pixels per update)</sub>
 
 ***Gravity From Planets***  
 If checked, the rockets experience gravitational effects from the planets and sun, otherwise only from the sun.
