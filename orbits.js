@@ -123,8 +123,8 @@ function planet(name, widthFactor, heightFactor, img, radius, angle) {
     this.angSpeed = getAngSpeed(radius); // angular speed of planet in rads / update
     this.x = (innerWidth/2) + Math.cos(this.angle) * this.radius;
     this.y = (innerHeight/2) - Math.sin(this.angle) * this.radius;
-    this.img = img
-    ctx = area.context;   
+    this.img = img;
+    ctx = area.context;
     ctx.drawImage(this.img, (innerWidth - this.width)/2 + this.radius, (innerHeight - this.height)/2, this.width, this.height);  
 
     this.update = function(){  
@@ -132,15 +132,15 @@ function planet(name, widthFactor, heightFactor, img, radius, angle) {
         this.angSpeed = getAngSpeed(this.radius);
 
         // updates scale
-        this.width = this.widthFactor * planetScale;  
-        this.height = this.heightFactor * planetScale;         
+        this.width = this.widthFactor * planetScale;
+        this.height = this.heightFactor * planetScale;
 
-        this.angle += this.angSpeed; 
+        this.angle += this.angSpeed;
         this.x = (innerWidth/2) + Math.cos(this.angle) * this.radius;
         this.y = (innerHeight/2) - Math.sin(this.angle) * this.radius;
 
         ctx = area.context;   
-        ctx.drawImage(this.img, this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);  
+        ctx.drawImage(this.img, this.x - (this.width/2), this.y - (this.height/2), this.width, this.height);
     }
 }  
 
@@ -176,7 +176,6 @@ function rocket(launchAngle) {
     ctx.rotate(this.launchAngle + (Math.PI/2));
     ctx.drawImage(this.img, -(this.width/2), -(this.height/2), this.width, this.height);  
     ctx.restore();
-    console.log(this.x)  
 
     this.update = function() {
         xAccel = 0;
@@ -218,7 +217,7 @@ function rocket(launchAngle) {
         }
 
         if(useCollisions) {
-            //if colliding with the sun, remove from dictionary
+            // if colliding with the sun, remove from dictionary
             if(Math.abs(theSun.x - this.x) < theSun.width/2 && Math.abs(theSun.y - this.y) < theSun.height/2) {
                 delete rockets[this.id];
             }
@@ -237,7 +236,6 @@ function rocket(launchAngle) {
         ctx.rotate(this.launchAngle + (Math.PI/2));
         ctx.drawImage(this.img, -(this.width/2), -(this.height/2), this.width, this.height);  
         ctx.restore();
-        console.log(this.x)
     }
 }
 
@@ -254,7 +252,7 @@ function update() {
     launchVel = document.getElementById("launchVel").value;
 
     area.clear();
-    theSun.update()
+    theSun.update();
     for (p of planets) {
         p.update();
     }
@@ -262,7 +260,7 @@ function update() {
         rockets[k].update();
     }
 
-    launchAngle += 0.02; // increases launch angle (units are rad / update
+    launchAngle += 0.02; // increases launch angle, units are rad / update
     drawArrow();
 }
 
@@ -281,7 +279,6 @@ function drawArrow(){
     ctx.rotate(this.launchAngle + (Math.PI/2));
     ctx.drawImage(arrowImg, -(width/2), -(height/2), width, height);  
     ctx.restore();
-    console.log(this.x) 
 }
 
 function loadImages() {
